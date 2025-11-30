@@ -2,9 +2,15 @@ package accounts.web
 
 import accounts.model.Account
 import accounts.repository.AccountRepository
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.logging.Logger
 
@@ -51,7 +57,25 @@ class AccountsController @Autowired constructor(accountRepository: AccountReposi
      * @return The account if found.
      * @throws AccountNotFoundException If the number is not recognised.
      */
-    @RequestMapping("/accounts/{accountNumber}")
+    @Operation(
+        summary = "Obtiene una cuenta por número",
+        description = "Devuelve una cuenta a partir de su número de cuenta (9 dígitos). " +
+                "Lanza AccountNotFoundException si no existe."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Cuenta encontrada",
+                content = [Content(schema = Schema(implementation = Account::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "No existe una cuenta con ese número"
+            )
+        ]
+    )
+    @GetMapping("/accounts/{accountNumber}")
     fun byNumber(@PathVariable("accountNumber") accountNumber: String): Account {
         logger.info("accounts-service byNumber() invoked: $accountNumber")
         val account = accountRepository.findByNumber(accountNumber)
@@ -68,7 +92,24 @@ class AccountsController @Autowired constructor(accountRepository: AccountReposi
      * @return A non-null, non-empty set of accounts.
      * @throws AccountNotFoundException If there are no matches at all.
      */
-    @RequestMapping("/accounts/owner/{name}")
+    @Operation(
+        summary = "Busca cuentas por nombre del propietario",
+        description = "Realiza una búsqueda parcial y case-insensitive en el nombre del propietario."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Lista de cuentas encontradas",
+                content = [Content(schema = Schema(implementation = Account::class))]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "No se encontraron cuentas que coincidan con el nombre"
+            )
+        ]
+    )
+    @GetMapping("/accounts/owner/{name}")
     fun byOwner(@PathVariable("name") partialName: String): List<Account> {
         logger.info("accounts-service byOwner() invoked: ${accountRepository.javaClass.getName()} for $partialName")
         val accounts: List<Account> = accountRepository.findByOwnerContainingIgnoreCase(partialName)
