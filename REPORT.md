@@ -1,12 +1,20 @@
 # Lab 6 Microservices - Project Report
 
+**Author:** Ariana Porroche Llorén (874055)
+
+**Date:** 04th December 2025
+
+**Course:** Web Engineering
+
+
 ## 1. Configuration Setup
 
-**Configuration Repository**: [Link to your forked repository]
-
-Describe the changes you made to the configuration:
-
-- What did you modify in `accounts-service.yml`?
+- Modifications in `accounts-service.yml`
+```
+# HTTP Server
+server:
+  port: 2222
+```
 - Why is externalized configuration useful in microservices?
 
 ---
@@ -18,12 +26,18 @@ Describe the changes you made to the configuration:
 ![Accounts Registration Log](docs/screenshots/accounts-registration.png)
 
 Explain what happens during service registration.
+```
+2025-12-04T19:47:41.837+01:00  INFO 7722 --- [accounts-service] [foReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ACCOUNTS-SERVICE/localhost:accounts-service:3333 - registration status: 204
+```
 
 ### Web Service Registration
 
 ![Web Registration Log](docs/screenshots/web-registration.png)
 
 Explain how the web service discovers the accounts service.
+```
+2025-12-04T19:48:13.766+01:00  INFO 8203 --- [web-service] [foReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_WEB-SERVICE/localhost:web-service:4444 - registration status: 204
+```
 
 ---
 
