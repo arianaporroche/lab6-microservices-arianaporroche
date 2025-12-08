@@ -28,4 +28,10 @@ dependencies {
     implementation(libs.spring.cloud.starter.netflix.eureka.client)
     implementation(libs.spring.cloud.starter.config)
     implementation(libs.google.gson)
+
+    // --- PARA DISTRIBUTED TRACING (BONUS 3) ---
+    implementation(libs.spring.boot.starter.web)
+    implementation("io.micrometer:micrometer-tracing-bridge-brave")
+    implementation("io.zipkin.reporter2:zipkin-reporter-brave")
+    // ------------------------------------------
 }

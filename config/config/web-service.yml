@@ -20,6 +20,17 @@ management:
     web:
       exposure:
         include: "*"
+  # -------------------------------------
+  # Distributed Tracing Configuration
+  # -------------------------------------
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+
+  zipkin:
+    exporter:
+      endpoint: http://localhost:9411/api/v2/spans
 
 # Application info
 info:
